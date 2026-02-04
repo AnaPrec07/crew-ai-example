@@ -92,14 +92,16 @@ class TripCrew:
 
 # This is the main function that you will use to run your custom crew.
 if __name__ == "__main__":
-    print("## Welcome to Crew AI Template")
+    print("## Welcome to Crew AI Travel Agent")
     print("-------------------------------")
-    var1 = input(dedent("""Enter variable 1: """))
-    var2 = input(dedent("""Enter variable 2: """))
+    origin = input(dedent("""Enter your origin city: """))
+    cities = input(dedent("""Enter destination cities: """))
+    travel_dates = input(dedent("""Enter travel dates: """))
+    interests = input(dedent("""Enter your interests: """))
 
-    custom_crew = CustomCrew(var1, var2)
-    result = custom_crew.run()
+    trip_crew = TripCrew(origin, cities, travel_dates, interests)
+    result = trip_crew.run()
     print("\n\n########################")
-    print("## Here is you custom crew run result:")
+    print("## Here is your travel itinerary:")
     print("########################\n")
     print(result)
