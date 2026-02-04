@@ -36,9 +36,11 @@ Notes:
 
 class TravelAgents:
     def __init__(self):
+        # Both use Gemini Pro model - you can configure different models here if needed
+        # For example: gemini-pro for faster responses, gemini-pro-vision for multimodal
         self.GeminiPro = ChatVertexAI(
             model_name="gemini-pro", temperature=0.7)
-        self.GeminiProAdvanced = ChatVertexAI(
+        self.GeminiProAlt = ChatVertexAI(
             model_name="gemini-pro", temperature=0.7)
 
     def expert_travel_agent(self):
@@ -68,7 +70,7 @@ class TravelAgents:
                 f"""Select the best cities based on weather, season, prices, and traveler interests"""),
             tools=[SearchTools.search_internet],
             verbose=True,
-            llm=self.GeminiProAdvanced,
+            llm=self.GeminiProAlt,
         )
 
     def local_tour_guide(self):
@@ -80,5 +82,5 @@ class TravelAgents:
                 f"""Provide the BEST insights about the selected city"""),
             tools=[SearchTools.search_internet],
             verbose=True,
-            llm=self.GeminiProAdvanced,
+            llm=self.GeminiProAlt,
         )
