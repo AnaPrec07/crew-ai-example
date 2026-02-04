@@ -1,6 +1,6 @@
 from crewai import Agent
 from textwrap import dedent
-from langchain_openai import ChatOpenAI
+from langchain_google_vertexai import ChatVertexAI
 
 from tools.search_tools import SearchTools
 from tools.calculator_tools import CalculatorTools
@@ -36,9 +36,10 @@ Notes:
 
 class TravelAgents:
     def __init__(self):
-        self.OpenAIGPT35 = ChatOpenAI(
-            model_name="gpt-3.5-turbo", temperature=0.7)
-        self.OpenAIGPT4 = ChatOpenAI(model_name="gpt-4", temperature=0.7)
+        self.GeminiPro = ChatVertexAI(
+            model_name="gemini-pro", temperature=0.7)
+        self.GeminiProAdvanced = ChatVertexAI(
+            model_name="gemini-pro", temperature=0.7)
 
     def expert_travel_agent(self):
         return Agent(
@@ -55,7 +56,7 @@ class TravelAgents:
                 CalculatorTools.calculate
             ],
             verbose=True,
-            llm=self.OpenAIGPT35,
+            llm=self.GeminiPro,
         )
 
     def city_selection_expert(self):
@@ -67,7 +68,7 @@ class TravelAgents:
                 f"""Select the best cities based on weather, season, prices, and traveler interests"""),
             tools=[SearchTools.search_internet],
             verbose=True,
-            llm=self.OpenAIGPT4,
+            llm=self.GeminiProAdvanced,
         )
 
     def local_tour_guide(self):
@@ -79,5 +80,5 @@ class TravelAgents:
                 f"""Provide the BEST insights about the selected city"""),
             tools=[SearchTools.search_internet],
             verbose=True,
-            llm=self.OpenAIGPT4,
+            llm=self.GeminiProAdvanced,
         )

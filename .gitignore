@@ -3,3 +3,23 @@
 
 # Cache folders
 __pycache__/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+.terraform/
+.terraform.lock.hcl
+
+# GCP Service Account Keys
+*-key.json
+service-account*.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Docker
+.dockerignore

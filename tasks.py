@@ -47,7 +47,7 @@ class TravelTasks:
     
     def plan_itinerary(self, agent, city, travel_dates, interests):
         return Task(
-            desription=dedent(
+            description=dedent(
                 f"""
                 **Task**: Develop a 7-Day Travel Itinerary
                 **Description**: Expand the city guide into a full 7-day travel itinerary with detailed 

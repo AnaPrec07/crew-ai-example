@@ -1,7 +1,8 @@
 import os
 from crewai import Agent, Task, Crew, Process
-from langchain_openai import ChatOpenAI
 from decouple import config
+from google.auth import default
+from google.cloud import aiplatform
 
 from textwrap import dedent
 from agents import TravelAgents
@@ -14,8 +15,25 @@ from langchain.tools import DuckDuckGoSearchRun
 
 search_tool = DuckDuckGoSearchRun()
 
-os.environ["OPENAI_API_KEY"] = config("OPENAI_API_KEY")
-os.environ["OPENAI_ORGANIZATION"] = config("OPENAI_ORGANIZATION_ID")
+# Initialize GCP credentials and Vertex AI
+# When running on Cloud Run, this will automatically use the service account
+# For local development, set GOOGLE_APPLICATION_CREDENTIALS environment variable
+try:
+    credentials, project_id = default()
+    gcp_project = config("GCP_PROJECT_ID", default=project_id)
+    gcp_location = config("GCP_LOCATION", default="us-central1")
+    
+    # Initialize Vertex AI
+    aiplatform.init(project=gcp_project, location=gcp_location)
+    
+    # Set environment variables for Vertex AI
+    os.environ["GOOGLE_CLOUD_PROJECT"] = gcp_project
+    os.environ["GOOGLE_CLOUD_LOCATION"] = gcp_location
+except Exception as e:
+    print(f"Warning: Could not initialize GCP credentials: {e}")
+    print("Make sure GOOGLE_APPLICATION_CREDENTIALS is set or running on Cloud Run")
+    gcp_project = config("GCP_PROJECT_ID", default=None)
+    gcp_location = config("GCP_LOCATION", default="us-central1")
 
 # This is the main class that you will use to define your custom crew.
 # You can define as many agents and tasks as you want in agents.py and tasks.py
