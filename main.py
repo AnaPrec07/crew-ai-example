@@ -7,15 +7,9 @@ from textwrap import dedent
 from agents import TravelAgents
 from tasks import TravelTasks
 
-# Install duckduckgo-search for this example:
-# !pip install -U duckduckgo-search
+from dotenv import load_dotenv
 
-from langchain.tools import DuckDuckGoSearchRun
-
-search_tool = DuckDuckGoSearchRun()
-
-os.environ["OPENAI_API_KEY"] = config("OPENAI_API_KEY")
-os.environ["OPENAI_ORGANIZATION"] = config("OPENAI_ORGANIZATION_ID")
+load_dotenv()
 
 # This is the main class that you will use to define your custom crew.
 # You can define as many agents and tasks as you want in agents.py and tasks.py
@@ -37,6 +31,7 @@ class TripCrew:
         agent_expert_travel_agent = agents.expert_travel_agent()
         agent_city_selection_expert = agents.city_selection_expert()
         agent_local_tour_guide = agents.local_tour_guide()
+        agent_sassy_manager = agents.sassy_manager()
 
         # Custom tasks include agent name and variables as input
         task_plan_itinerary = tasks.plan_itinerary(
@@ -49,7 +44,7 @@ class TripCrew:
         task_identify_city = tasks.identify_city(
             agent=agent_city_selection_expert,
             origin=self.origin,
-            city=self.cities,
+            cities=self.cities,
             travel_dates=self.travel_dates,
             interests=self.interests
         )
@@ -61,11 +56,17 @@ class TripCrew:
             interests=self.interests 
         )
 
+        task_compile_and_entertain = tasks.compile_and_entertain(
+            agent=agent_sassy_manager,
+        )
+
         # Define your custom crew here
         crew = Crew(
             agents=[agent_expert_travel_agent, agent_city_selection_expert,agent_local_tour_guide],
-            tasks=[task_plan_itinerary, task_identify_city,task_gather_city_info],
+            tasks=[task_identify_city,task_gather_city_info, task_plan_itinerary, task_compile_and_entertain],
             verbose=True,
+            process=Process.hierarchical,
+            manager_agent=agent_sassy_manager
         )
 
         result = crew.kickoff()
@@ -76,11 +77,18 @@ class TripCrew:
 if __name__ == "__main__":
     print("## Welcome to Crew AI Template")
     print("-------------------------------")
-    var1 = input(dedent("""Enter variable 1: """))
-    var2 = input(dedent("""Enter variable 2: """))
+    origin = "Panama"#input(dedent("""Enter the place of origin for your trip: """))
+    cities = "Japan" #input(dedent("""Enter the cities you are interested in visiting: """))
+    travel_dates = "November"#input(dedent("""Enter your travel dates: """))
+    interests = "History and anime" #input(dedent("""Enter your interestes: """))
 
-    custom_crew = CustomCrew(var1, var2)
-    result = custom_crew.run()
+    trip_crew = TripCrew(
+        origin=origin, 
+        cities=cities, 
+        travel_dates=travel_dates, 
+        interests=interests
+    )
+    result = trip_crew.run()
     print("\n\n########################")
     print("## Here is you custom crew run result:")
     print("########################\n")
