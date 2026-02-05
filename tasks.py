@@ -47,7 +47,7 @@ class TravelTasks:
     
     def plan_itinerary(self, agent, city, travel_dates, interests):
         return Task(
-            desription=dedent(
+            description=dedent(
                 f"""
                 **Task**: Develop a 7-Day Travel Itinerary
                 **Description**: Expand the city guide into a full 7-day travel itinerary with detailed 
@@ -64,7 +64,18 @@ class TravelTasks:
                 **Note**: {self.__tip_section()}
                 """
             ),
-            agent = agent
+            expected_output=dedent(
+                """
+                A detailed 7-day itinerary with:
+                - Day-by-day plans
+                - Weather forecasts
+                - Places to eat
+                - Packing suggestions
+                - Budget breakdown
+                - Actual places, hotels, and restaurants
+                """
+            ),
+            agent=agent
         )
 
     def identify_city(self, agent, origin, cities, travel_dates, interests):
@@ -79,7 +90,6 @@ class TravelTasks:
                         Your final answer must be a detailed report on the chosen city, 
                         including actual flight costs, weather forecast, and attractions.
 
-
                     **Parameters**: 
                     - Origin: {origin}
                     - Cities: {cities}
@@ -87,6 +97,16 @@ class TravelTasks:
                     - Travel Date: {travel_dates}
 
                     **Note**: {self.__tip_section()}
+                """
+            ),
+            expected_output=dedent(
+                """
+                A report with:
+                - The selected city
+                - Reasoning for selection
+                - Actual flight costs
+                - Weather forecast
+                - Attractions and events
                 """
             ),
             agent=agent,
@@ -108,7 +128,63 @@ class TravelTasks:
                     - Travel Date: {travel_dates}
 
                     **Note**: {self.__tip_section()}
-        """
+            """
+            ),
+            expected_output=dedent(
+                """
+                A city guide with:
+                - Key attractions
+                - Local customs
+                - Special events
+                - Daily activity recommendations
+                - Hidden gems
+                - Weather forecasts
+                - High-level costs
+                """
             ),
             agent=agent,
+        )
+
+    def compile_and_entertain(self, agent):
+        return Task(
+            description=dedent(
+                f"""
+                    **Task**:  Compile and entertain
+                    **Description**: Compile the information gathered by the other agents and edit it 
+                    to return a humorous, sassy and sarcastic answer to the user. Keep it informative as well as humorous.
+
+                    **Note**: {self.__tip_section()}
+            """
+            ),
+            expected_output=dedent(
+                """
+                # Travel Itinerary:
+                ## City Recommended
+                - The selected city
+                - Reasoning for selection
+
+                ## Budget and packing
+                - Overall trip budget
+                - Packing advice
+
+                ## Weather
+                - Expected weather
+
+                ## Cultural warnings
+                - Things to keep in mind when traveling
+
+                ## Hidden Gems
+                - Hidden gems
+
+                ## Day by day:
+                - Day-by-day plans
+                - Weather forecasts
+                - Places to eat
+                - Budget breakdown
+                - Actual places, hotels, and restaurants
+
+                """
+            ),
+            agent=agent,
+            output_file="results.md"
         )

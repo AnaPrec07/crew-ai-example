@@ -1,14 +1,18 @@
 import json
 import os
-
+from crewai.tools import BaseTool
 import requests
 from langchain.tools import tool
+from typing import ClassVar
 
 
-class SearchTools():
 
-    @tool("Search the internet")
-    def search_internet(query):
+class SearchTools(BaseTool):
+
+    name: str = "search_internet"
+    description: str = "Useful to search the internet about a a given topic and return relevant results."
+
+    def _run(self, query: str) -> str:
         """Useful to search the internet
         about a a given topic and return relevant results"""
         top_result_to_return = 4
@@ -35,3 +39,4 @@ class SearchTools():
                     next
 
             return '\n'.join(string)
+    

@@ -39,20 +39,22 @@ class TravelAgents:
         self.OpenAIGPT35 = ChatOpenAI(
             model_name="gpt-3.5-turbo", temperature=0.7)
         self.OpenAIGPT4 = ChatOpenAI(model_name="gpt-4", temperature=0.7)
+        self.search_tools = SearchTools()
+        self.calculator_tools = CalculatorTools()
 
     def expert_travel_agent(self):
         return Agent(
             role="Expert Travel Agent",
             backstory=dedent(
                 f"""Expert in travel planning and logistics. 
-                I have decades of expereince making travel iteneraries."""),
+                I have decades of expereince making travel iteneraries. It includes the insights compiled by the ohter agents."""),
             goal=dedent(f"""
                         Create a 7-day travel itinerary with detailed per-day plans,
                         include budget, packing suggestions, and safety tips.
                         """),
             tools=[
-                SearchTools.search_internet,
-                CalculatorTools.calculate
+                self.search_tools,
+                self.calculator_tools
             ],
             verbose=True,
             llm=self.OpenAIGPT35,
@@ -65,9 +67,9 @@ class TravelAgents:
                 f"""Expert at analyzing travel data to pick ideal destinations"""),
             goal=dedent(
                 f"""Select the best cities based on weather, season, prices, and traveler interests"""),
-            tools=[SearchTools.search_internet],
+            tools=[self.search_tools],
             verbose=True,
-            llm=self.OpenAIGPT4,
+            llm=self.OpenAIGPT35,
         )
 
     def local_tour_guide(self):
@@ -77,7 +79,20 @@ class TravelAgents:
         about the city, it's attractions and customs"""),
             goal=dedent(
                 f"""Provide the BEST insights about the selected city"""),
-            tools=[SearchTools.search_internet],
+            tools=[self.search_tools],
             verbose=True,
-            llm=self.OpenAIGPT4,
+            llm=self.OpenAIGPT35,
+        )
+    def sassy_manager(self):
+        return Agent(
+            role="Sassy manager",
+            backstory=dedent(
+                f"""This agent compiles all the information from the other agents and presents it to the user. Discern if the answer by 
+                the other models is usable or not. The output should be humorous, sassy and sarcastic."""),
+            goal=dedent(f"""
+                        Compile the information and present it to the user in markdown. Change the information passed by the other LLMs to tell a 
+                        sassy joke in each line alongside their content.
+                        """),
+            verbose=True,
+            llm=self.OpenAIGPT35,
         )
