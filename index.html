@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrewAI Travel Planner | Multi-Agent AI System</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #2d3748;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 3rem 1rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+      margin-bottom: 2rem;
+      color: white;
+    }
+
+    header h1 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #e2e8f0;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 0 auto 3rem auto;
+      padding: 2rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #4c51bf;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
+
+    a.btn-link {
+      display: inline-block;
+      margin: 0.25rem 0.5rem;
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white !important;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    a.btn-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    table th, table td {
+      border: 1px solid #e2e8f0;
+      padding: 1rem 0.75rem;
+      text-align: left;
+    }
+
+    table th {
+      background: linear-gradient(135deg, #4c51bf 0%, #5a67d8 100%);
+      color: white;
+      font-weight: 600;
+    }
+
+    table tbody tr:nth-child(even) {
+      background-color: #f7fafc;
+    }
+
+    .architecture-diagram {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 2rem;
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 0.95rem;
+      white-space: pre;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-top: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #718096;
+      font-size: 0.9rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>CrewAI Travel Planner</h1>
+  <p>Hierarchical Multi-Agent AI System for Automated Travel Planning</p>
+  <div>
+    <a class="btn btn-link" href="https://github.com/AnaPrec07/crew-ai-example" target="_blank">GitHub Repository</a>
+    <a class="btn btn-link" href="https://github.com/AnaPrec07/crew-ai-example/blob/main/results.md" target="_blank">Sample Output</a>
+  </div>
+</header>
+
+<section>
+  <h2>Executive Summary</h2>
+  <p>
+    <strong>CrewAI Travel Planner</strong> demonstrates how specialized AI agents can collaborate hierarchically
+    to solve complex, real-world planning problems. The system automates destination selection, itinerary design,
+    budgeting, and cultural research — producing comprehensive travel plans in minutes.
+  </p>
+  <ul>
+    <li><strong>Reduces planning time</strong> from hours to minutes</li>
+    <li><strong>Combines expert reasoning</strong> across multiple agent roles</li>
+    <li><strong>Demonstrates production-ready agent orchestration</strong></li>
+  </ul>
+</section>
+
+<section>
+  <h2>The Problem Addressed</h2>
+  <ul>
+    <li><strong>Fragmented research</strong>: Travel planning requires switching across many tools and sources</li>
+    <li><strong>Cognitive overload</strong>: Budgeting, logistics, and cultural research compete for attention</li>
+    <li><strong>Lack of personalization</strong>: Generic itineraries fail to adapt to user interests and constraints</li>
+  </ul>
+</section>
+
+<section>
+  <h2>System Architecture</h2>
+  <p>The platform follows a hierarchical multi-agent architecture coordinated by a manager agent.</p>
+
+  <div class="architecture-diagram">
+Manager Agent (Orchestrator)
+│
+├─ City Selection Expert
+│   └─ Weather, costs, seasonality analysis
+│
+├─ Local Tour Guide
+│   └─ Cultural insights, hidden gems, landmarks
+│
+└─ Expert Travel Agent
+    └─ Daily itinerary, logistics, budget calculations
+  </div>
+</section>
+
+<section>
+  <h2>Technology Stack</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Technology</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Agent Framework</td>
+        <td>CrewAI</td>
+        <td>Multi-agent orchestration and hierarchical workflows</td>
+      </tr>
+      <tr>
+        <td>LLMs</td>
+        <td>OpenAI GPT-3.5 / GPT-4</td>
+        <td>Reasoning, planning, and natural language generation</td>
+      </tr>
+      <tr>
+        <td>Search</td>
+        <td>Serper API</td>
+        <td>Real-time web research for travel data</td>
+      </tr>
+      <tr>
+        <td>Runtime</td>
+        <td>Python 3.x</td>
+        <td>Application execution and tooling</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Key Features</h2>
+  <ul>
+    <li>Hierarchical multi-agent coordination</li>
+    <li>Real-time search and cost calculations</li>
+    <li>7-day detailed itineraries with budgets</li>
+    <li>Cultural guidance and safety considerations</li>
+    <li>Markdown-based output artifacts</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Learning Outcomes</h2>
+  <ul>
+    <li>Designing agent roles and responsibilities</li>
+    <li>Managing hierarchical vs sequential agent workflows</li>
+    <li>Extending agents with custom tools</li>
+    <li>Prompt engineering for specialization</li>
+  </ul>
+</section>
+
+<footer>
+  &copy; 2026 CrewAI Travel Planner · Built with CrewAI
+</footer>
+
+</body>
+</html>
