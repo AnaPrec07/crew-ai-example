@@ -1,596 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CrewAI Travel Planner - Multi-Agent AI System</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CrewAI Travel Planner | Multi-Agent AI System</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #2c3e50;
-            line-height: 1.6;
-        }
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .page-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      color: #2d3748;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
 
-        header {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 60px 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 3rem 1rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+      margin-bottom: 2rem;
+      color: white;
+    }
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 15s ease-in-out infinite;
-        }
+    header h1 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
+    header p {
+      font-size: 1.1rem;
+      color: #e2e8f0;
+    }
 
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
+    section {
+      max-width: 900px;
+      margin: 0 auto 3rem auto;
+      padding: 2rem;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      border: 1px solid #e2e8f0;
+    }
 
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: #4c51bf;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 0.5rem;
+    }
 
-        .tagline {
-            font-size: 1.4em;
-            opacity: 0.95;
-            font-weight: 300;
-            margin-bottom: 30px;
-        }
+    a.btn-link {
+      display: inline-block;
+      margin: 0.25rem 0.5rem;
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white !important;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .badge-container {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 25px;
-        }
+    a.btn-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+    }
 
-        .badge {
-            background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
-            border-radius: 25px;
-            font-size: 0.9em;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
-        .content-section {
-            padding: 50px 40px;
-        }
+    table th, table td {
+      border: 1px solid #e2e8f0;
+      padding: 1rem 0.75rem;
+      text-align: left;
+    }
 
-        .section-title {
-            font-size: 2.2em;
-            color: #1e3c72;
-            margin-bottom: 25px;
-            border-left: 5px solid #667eea;
-            padding-left: 20px;
-        }
+    table th {
+      background: linear-gradient(135deg, #4c51bf 0%, #5a67d8 100%);
+      color: white;
+      font-weight: 600;
+    }
 
-        .value-proposition {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 40px;
-            border-radius: 15px;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
+    table tbody tr:nth-child(even) {
+      background-color: #f7fafc;
+    }
 
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
+    .architecture-diagram {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 2rem;
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 0.95rem;
+      white-space: pre;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      margin-top: 1.5rem;
+    }
 
-        .value-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .value-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-
-        .value-icon {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-
-        .value-card h3 {
-            color: #1e3c72;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .architecture-diagram {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 10px;
-            margin: 25px 0;
-            border: 2px solid #e9ecef;
-        }
-
-        .agent-flow {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .agent-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-
-        .agent-title {
-            font-weight: bold;
-            color: #1e3c72;
-            font-size: 1.2em;
-            margin-bottom: 8px;
-        }
-
-        .agent-description {
-            color: #555;
-            font-size: 0.95em;
-        }
-
-        .code-snippet {
-            background: #282c34;
-            color: #abb2bf;
-            padding: 25px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-
-        .keyword {
-            color: #c678dd;
-        }
-
-        .string {
-            color: #98c379;
-        }
-
-        .comment {
-            color: #5c6370;
-            font-style: italic;
-        }
-
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
-
-        .feature-list li {
-            padding: 12px 0;
-            padding-left: 35px;
-            position: relative;
-        }
-
-        .feature-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #667eea;
-            font-weight: bold;
-            font-size: 1.3em;
-        }
-
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 25px 0;
-        }
-
-        .tech-item {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: 500;
-            font-size: 0.9em;
-        }
-
-        .installation-steps {
-            counter-reset: step-counter;
-            list-style: none;
-            padding: 0;
-        }
-
-        .installation-steps li {
-            counter-increment: step-counter;
-            padding: 20px;
-            margin: 15px 0;
-            background: #f8f9fa;
-            border-radius: 8px;
-            position: relative;
-            padding-left: 70px;
-        }
-
-        .installation-steps li::before {
-            content: counter(step-counter);
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #667eea;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            text-align: center;
-            padding: 60px 40px;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #1e3c72;
-            padding: 15px 40px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1em;
-            margin: 20px 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-        }
-
-        footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 30px;
-            font-size: 0.9em;
-        }
-
-        .output-preview {
-            background: #fff;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 25px 0;
-        }
-
-        .output-preview h4 {
-            color: #1e3c72;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            
-            .tagline {
-                font-size: 1.1em;
-            }
-            
-            .content-section {
-                padding: 30px 20px;
-            }
-            
-            .value-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #718096;
+      font-size: 0.9rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      margin-top: 2rem;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="page-wrapper">
-        <header>
-            <div class="header-content">
-                <h1>🤖 CrewAI Travel Planner</h1>
-                <p class="tagline">Intelligent Multi-Agent System for Automated Travel Itinerary Planning</p>
-                <div class="badge-container">
-                    <span class="badge">Python</span>
-                    <span class="badge">CrewAI</span>
-                    <span class="badge">OpenAI GPT</span>
-                    <span class="badge">LangChain</span>
-                    <span class="badge">Hierarchical AI</span>
-                </div>
-            </div>
-        </header>
 
-        <div class="content-section">
-            <h2 class="section-title">🎯 Project Overview</h2>
-            <p style="font-size: 1.1em; color: #555; margin-bottom: 20px;">
-                This project demonstrates the power of <strong>collaborative AI agents</strong> working together to solve complex problems. 
-                Built with CrewAI, it orchestrates multiple specialized AI agents in a hierarchical structure to create 
-                comprehensive, personalized travel itineraries that would typically require hours of manual research.
-            </p>
+<header>
+  <h1>CrewAI Travel Planner</h1>
+  <p>Hierarchical Multi-Agent AI System for Automated Travel Planning</p>
+  <div>
+    <a class="btn btn-link" href="https://github.com/AnaPrec07/crew-ai-example" target="_blank">GitHub Repository</a>
+    <a class="btn btn-link" href="https://github.com/AnaPrec07/crew-ai-example/blob/main/results.md" target="_blank">Sample Output</a>
+  </div>
+</header>
 
-            <div class="value-proposition">
-                <h3 style="font-size: 1.8em; color: #1e3c72; margin-bottom: 20px;">💎 Value Proposition</h3>
-                <p style="font-size: 1.1em; margin-bottom: 25px;">
-                    Traditional travel planning is time-consuming and fragmented. Our multi-agent system brings together 
-                    specialized AI experts to deliver comprehensive travel plans in minutes, not hours.
-                </p>
-                
-                <div class="value-grid">
-                    <div class="value-card">
-                        <div class="value-icon">⚡</div>
-                        <h3>Speed & Efficiency</h3>
-                        <p>Generate detailed 7-day itineraries in minutes instead of spending hours researching across multiple websites and platforms.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🎓</div>
-                        <h3>Expert Knowledge</h3>
-                        <p>Combines insights from specialized agents: city selection experts, local tour guides, and travel planning specialists.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🎯</div>
-                        <h3>Personalization</h3>
-                        <p>Tailored recommendations based on your interests, travel dates, budget preferences, and departure location.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">📊</div>
-                        <h3>Comprehensive Planning</h3>
-                        <p>Includes weather forecasts, budget breakdowns, packing suggestions, cultural tips, and day-by-day activity plans.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🤝</div>
-                        <h3>Collaborative AI</h3>
-                        <p>Demonstrates advanced AI orchestration where multiple agents work together hierarchically under a manager.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🎭</div>
-                        <h3>Engaging Experience</h3>
-                        <p>Features a sassy manager agent that compiles information into an entertaining, informative presentation.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section>
+  <h2>Executive Summary</h2>
+  <p>
+    <strong>CrewAI Travel Planner</strong> demonstrates how specialized AI agents can collaborate hierarchically
+    to solve complex, real-world planning problems. The system automates destination selection, itinerary design,
+    budgeting, and cultural research — producing comprehensive travel plans in minutes.
+  </p>
+  <ul>
+    <li><strong>Reduces planning time</strong> from hours to minutes</li>
+    <li><strong>Combines expert reasoning</strong> across multiple agent roles</li>
+    <li><strong>Demonstrates production-ready agent orchestration</strong></li>
+  </ul>
+</section>
 
-        <div class="content-section" style="background: #f8f9fa;">
-            <h2 class="section-title">🏗️ System Architecture</h2>
-            <p style="font-size: 1.1em; color: #555; margin-bottom: 25px;">
-                The system employs a <strong>hierarchical process model</strong> where specialized agents collaborate under 
-                the coordination of a manager agent. Each agent has distinct expertise and contributes to the final itinerary.
-            </p>
+<section>
+  <h2>The Problem Addressed</h2>
+  <ul>
+    <li><strong>Fragmented research</strong>: Travel planning requires switching across many tools and sources</li>
+    <li><strong>Cognitive overload</strong>: Budgeting, logistics, and cultural research compete for attention</li>
+    <li><strong>Lack of personalization</strong>: Generic itineraries fail to adapt to user interests and constraints</li>
+  </ul>
+</section>
 
-            <div class="architecture-diagram">
-                <h3 style="color: #1e3c72; margin-bottom: 20px;">Agent Hierarchy</h3>
-                <div class="agent-flow">
-                    <div class="agent-item" style="border-left-color: #e74c3c;">
-                        <div class="agent-title">👔 Sassy Manager (Orchestrator)</div>
-                        <div class="agent-description">
-                            Coordinates all agents, validates outputs, and compiles the final itinerary with humor and personality. 
-                            Uses GPT-3.5-turbo for engaging content generation.
-                        </div>
-                    </div>
-                    <div class="agent-item">
-                        <div class="agent-title">🌍 City Selection Expert</div>
-                        <div class="agent-description">
-                            Analyzes weather patterns, seasonal events, travel costs, and cultural factors to recommend the optimal 
-                            destination. Provides data-driven city recommendations with flight costs and weather forecasts.
-                        </div>
-                    </div>
-                    <div class="agent-item">
-                        <div class="agent-title">🗺️ Local Tour Guide</div>
-                        <div class="agent-description">
-                            Offers deep local knowledge including hidden gems, cultural customs, special events, and must-visit landmarks. 
-                            Provides authentic insights about attractions and local experiences.
-                        </div>
-                    </div>
-                    <div class="agent-item">
-                        <div class="agent-title">✈️ Expert Travel Agent</div>
-                        <div class="agent-description">
-                            Creates detailed day-by-day itineraries with practical logistics: hotels, restaurants, activities, 
-                            budget breakdowns, and packing suggestions. Uses calculator and search tools for accurate planning.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<section>
+  <h2>System Architecture</h2>
+  <p>The platform follows a hierarchical multi-agent architecture coordinated by a manager agent.</p>
 
-        <div class="content-section">
-            <h2 class="section-title">✨ Key Features</h2>
-            <ul class="feature-list">
-                <li><strong>Multi-Agent Collaboration:</strong> Four specialized AI agents working in harmony</li>
-                <li><strong>Hierarchical Processing:</strong> Manager agent coordinates and validates all outputs</li>
-                <li><strong>Real-time Research:</strong> Internet search capabilities for current information</li>
-                <li><strong>Budget Calculations:</strong> Mathematical tools for accurate cost estimation</li>
-                <li><strong>Detailed Itineraries:</strong> Day-by-day plans with specific venues and activities</li>
-                <li><strong>Weather Integration:</strong> Current forecasts for informed planning</li>
-                <li><strong>Cultural Intelligence:</strong> Local customs, etiquette, and safety tips</li>
-                <li><strong>Hidden Gems:</strong> Off-the-beaten-path recommendations</li>
-                <li><strong>Personality Injection:</strong> Entertaining, sassy presentation style</li>
-                <li><strong>Markdown Output:</strong> Clean, structured results saved to file</li>
-            </ul>
-        </div>
+  <div class="architecture-diagram">
+Manager Agent (Orchestrator)
+│
+├─ City Selection Expert
+│   └─ Weather, costs, seasonality analysis
+│
+├─ Local Tour Guide
+│   └─ Cultural insights, hidden gems, landmarks
+│
+└─ Expert Travel Agent
+    └─ Daily itinerary, logistics, budget calculations
+  </div>
+</section>
 
-        <div class="content-section" style="background: #f8f9fa;">
-            <h2 class="section-title">🛠️ Technology Stack</h2>
-            <div class="tech-stack">
-                <span class="tech-item">CrewAI Framework</span>
-                <span class="tech-item">OpenAI GPT-3.5 & GPT-4</span>
-                <span class="tech-item">LangChain</span>
-                <span class="tech-item">Python 3.x</span>
-                <span class="tech-item">Serper API (Search)</span>
-                <span class="tech-item">Python Dotenv</span>
-                <span class="tech-item">Python Decouple</span>
-            </div>
+<section>
+  <h2>Technology Stack</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Technology</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Agent Framework</td>
+        <td>CrewAI</td>
+        <td>Multi-agent orchestration and hierarchical workflows</td>
+      </tr>
+      <tr>
+        <td>LLMs</td>
+        <td>OpenAI GPT-3.5 / GPT-4</td>
+        <td>Reasoning, planning, and natural language generation</td>
+      </tr>
+      <tr>
+        <td>Search</td>
+        <td>Serper API</td>
+        <td>Real-time web research for travel data</td>
+      </tr>
+      <tr>
+        <td>Runtime</td>
+        <td>Python 3.x</td>
+        <td>Application execution and tooling</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
-            <h3 style="color: #1e3c72; margin-top: 40px; margin-bottom: 20px;">Custom Tools Implementation</h3>
-            <p style="margin-bottom: 15px;">The system includes two custom tools that extend agent capabilities:</p>
-            <ul class="feature-list">
-                <li><strong>SearchTools:</strong> Internet search functionality using Serper API for real-time information gathering</li>
-                <li><strong>CalculatorTools:</strong> Mathematical operations for budget calculations and cost analysis</li>
-            </ul>
-        </div>
+<section>
+  <h2>Key Features</h2>
+  <ul>
+    <li>Hierarchical multi-agent coordination</li>
+    <li>Real-time search and cost calculations</li>
+    <li>7-day detailed itineraries with budgets</li>
+    <li>Cultural guidance and safety considerations</li>
+    <li>Markdown-based output artifacts</li>
+  </ul>
+</section>
 
-        <div class="content-section">
-            <h2 class="section-title">🚀 Getting Started</h2>
-            
-            <h3 style="color: #1e3c72; margin-bottom: 20px;">Prerequisites</h3>
-            <ul class="feature-list">
-                <li>Python 3.8 or higher installed on your system</li>
-                <li>OpenAI API key for GPT models</li>
-                <li>Serper API key for search functionality</li>
-                <li>Basic understanding of virtual environments</li>
-            </ul>
+<section>
+  <h2>Learning Outcomes</h2>
+  <ul>
+    <li>Designing agent roles and responsibilities</li>
+    <li>Managing hierarchical vs sequential agent workflows</li>
+    <li>Extending agents with custom tools</li>
+    <li>Prompt engineering for specialization</li>
+  </ul>
+</section>
 
-            <h3 style="color: #1e3c72; margin-top: 40px; margin-bottom: 20px;">Installation Steps</h3>
-            <ol class="installation-steps">
-                <li>
-                    <strong>Clone the Repository</strong><br>
-                    <code>git clone https://github.com/AnaPrec07/crew-ai-example.git</code><br>
-                    <code>cd crew-ai-example</code>
-                </li>
-                <li>
-                    <strong>Create Virtual Environment</strong><br>
-                    <code>python -m venv venv</code><br>
-                    <code>source venv/bin/activate</code> (Linux/Mac) or <code>venv\Scripts\activate</code> (Windows)
-                </li>
-                <li>
-                    <strong>Install Dependencies</strong><br>
-                    <code>pip install -r requirements.txt</code>
-                </li>
-                <li>
-                    <strong>Configure Environment Variables</strong><br>
-                    Create a <code>.env</code> file in the project root with:<br>
-                    <code>OPENAI_API_KEY=your_openai_key_here</code><br>
-                    <code>SERPER_API_KEY=your_serper_key_here</code>
-                </li>
-                <li>
-                    <strong>Run the Application</strong><br>
-                    <code>python main.py</code>
-                </li>
-            </ol>
-        </div>
+<footer>
+  &copy; 2026 CrewAI Travel Planner · Built with CrewAI
+</footer>
 
-        <div class="content-section" style="background: #f8f9fa;">
-            <h2 class="section-title">💻 Usage Example</h2>
-            <p style="margin-bottom: 20px;">Here's how to use the system (modify the variables in <code>main.py</code>):</p>
-            
-            <div class="code-snippet">
-<span class="keyword">from</span> main <span class="keyword">import</span> TripCrew
-
-<span class="comment"># Configure your travel parameters</span>
-trip_crew = TripCrew(
-    origin=<span class="string">"Panama"</span>,
-    cities=<span class="string">"Japan"</span>,
-    travel_dates=<span class="string">"November"</span>,
-    interests=<span class="string">"History and anime"</span>
-)
-
-<span class="comment"># Execute the multi-agent workflow</span>
-result = trip_crew.run()
-
-<span class="comment"># Results are automatically saved to results.md</span>
-            </div>
-
-            <div class="output-preview">
-                <h4>📋 Sample Output Structure</h4>
-                <p>The system generates a comprehensive markdown file containing:</p>
-                <ul class="feature-list" style="margin-top: 15px;">
-                    <li>Recommended city with selection rationale</li>
-                    <li>Overall budget estimate and packing advice</li>
-                    <li>Weather forecasts for travel period</li>
-                    <li>Cultural warnings and etiquette guidelines</li>
-                    <li>Hidden gem locations off tourist paths</li>
-                    <li>Day-by-day detailed itinerary (7 days)</li>
-                    <li>Specific restaurants, hotels, and attractions</li>
-                    <li>Budget breakdown per activity</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="content-section">
-            <h2 class="section-title">🎓 Learning Outcomes</h2>
-            <p style="margin-bottom: 25px;">This project serves as an excellent educational resource for understanding:</p>
-            
-            <div class="value-grid">
-                <div class="value-card">
-                    <h3>🧠 Agent-Based AI</h3>
-                    <p>Learn how to design and implement autonomous AI agents with specific roles and goals.</p>
-                </div>
-                <div class="value-card">
-                    <h3>🔄 Process Orchestration</h3>
-                    <p>Understand hierarchical vs. sequential workflows in multi-agent systems.</p>
-                </div>
-                <div class="value-card">
-                    <h3>🔧 Tool Integration</h3>
-                    <p>See how to extend agent capabilities with custom tools and external APIs.</p>
-                </div>
-                <div class="value-card">
-                    <h3>📝 Prompt Engineering</h3>
-                    <p>Examine effective prompt structures for specialized AI behaviors and outputs.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="cta-section">
-            <h2 style="font-size: 2.5em; margin-bottom: 20px;">Ready to Build with AI Agents?</h2>
-            <p style="font-size: 1.2em; margin-bottom: 30px; opacity: 0.9;">
-                Explore the code, customize the agents, and create your own multi-agent systems!
-            </p>
-            <a href="https://github.com/AnaPrec07/crew-ai-example" class="cta-button">View on GitHub</a>
-            <a href="https://github.com/AnaPrec07/crew-ai-example/blob/main/results.md" class="cta-button">See Sample Output</a>
-        </div>
-
-        <footer>
-            <p>&copy; 2026 CrewAI Travel Planner Project | Built with CrewAI Framework</p>
-            <p style="margin-top: 10px; opacity: 0.8;">Demonstrating the future of collaborative AI systems</p>
-        </footer>
-    </div>
 </body>
 </html>
