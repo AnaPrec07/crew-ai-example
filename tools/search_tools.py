@@ -2,8 +2,6 @@ import json
 import os
 from crewai.tools import BaseTool
 import requests
-from langchain.tools import tool
-from typing import ClassVar
 
 
 
