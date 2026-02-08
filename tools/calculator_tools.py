@@ -1,6 +1,4 @@
-from langchain.tools import tool
 from crewai.tools import BaseTool
-from typing import ClassVar
 
 class CalculatorTools(BaseTool):
     name: str = "calculate"
