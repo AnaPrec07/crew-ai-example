@@ -11,9 +11,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# This is the main class that you will use to define your custom crew.
-# You can define as many agents and tasks as you want in agents.py and tasks.py
-
 
 class TripCrew:
     def __init__(self, origin, cities, travel_dates, interests):
@@ -31,7 +28,7 @@ class TripCrew:
         agent_expert_travel_agent = agents.expert_travel_agent()
         agent_city_selection_expert = agents.city_selection_expert()
         agent_local_tour_guide = agents.local_tour_guide()
-        agent_sassy_manager = agents.sassy_manager()
+        agent_humorous_manager = agents.humorous_manager()
 
         # Custom tasks include agent name and variables as input
         task_plan_itinerary = tasks.plan_itinerary(
@@ -57,7 +54,7 @@ class TripCrew:
         )
 
         task_compile_and_entertain = tasks.compile_and_entertain(
-            agent=agent_sassy_manager,
+            agent=agent_humorous_manager,
         )
 
         # Define your custom crew here
@@ -66,7 +63,7 @@ class TripCrew:
             tasks=[task_identify_city,task_gather_city_info, task_plan_itinerary, task_compile_and_entertain],
             verbose=True,
             process=Process.hierarchical,
-            manager_agent=agent_sassy_manager
+            manager_agent=agent_humorous_manager
         )
 
         result = crew.kickoff()

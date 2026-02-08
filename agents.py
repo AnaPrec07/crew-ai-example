@@ -83,15 +83,14 @@ class TravelAgents:
             verbose=True,
             llm=self.OpenAIGPT35,
         )
-    def sassy_manager(self):
+    def humorous_manager(self):
         return Agent(
-            role="Sassy manager",
+            role="Humorous Manager",
             backstory=dedent(
                 f"""This agent compiles all the information from the other agents and presents it to the user. Discern if the answer by 
-                the other models is usable or not. The output should be humorous, sassy and sarcastic."""),
+                the other models is usable or not. The output should be humorous, relatable and informative."""),
             goal=dedent(f"""
-                        Compile the information and present it to the user in markdown. Change the information passed by the other LLMs to tell a 
-                        sassy joke in each line alongside their content.
+                        Compile the information and present it to the user in markdown.
                         """),
             verbose=True,
             llm=self.OpenAIGPT35,

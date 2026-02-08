@@ -162,16 +162,24 @@ class TravelTasks:
                 ## City Recommended
                 - The selected city
                 - Reasoning for selection
+                - Actual flight costs
 
                 ## Budget and packing
                 - Overall trip budget
                 - Packing advice
 
                 ## Weather
-                - Expected weather
+                - Weather forecasts
 
-                ## Cultural warnings
+                ## Places to eat
+                - Places to eat
+
+                ## Key Attractions
+                - Key attractions
+
+                ## Cultural Awareness
                 - Things to keep in mind when traveling
+                - Information on local customs
 
                 ## Hidden Gems
                 - Hidden gems
@@ -186,5 +194,6 @@ class TravelTasks:
                 """
             ),
             agent=agent,
-            output_file="results.md"
+            output_file="travel_recommendations.md"
         )
+    
